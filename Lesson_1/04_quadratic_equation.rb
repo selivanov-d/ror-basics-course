@@ -4,15 +4,14 @@ puts 'Нам нужно найти x, зная коэффиценты a, b и с
 puts 'Для решения уравнения введите их:'
 
 print 'первый: '
-a = gets.chomp.to_i
-
+a = gets.chomp.to_f
 abort 'a не может быть равно 0!' if a == 0
 
 print 'второй: '
-b = gets.chomp.to_i
+b = gets.chomp.to_f
 
 print 'третий: '
-c = gets.chomp.to_i
+c = gets.chomp.to_f
 
 d = b**2 - (4 * a * c)
 

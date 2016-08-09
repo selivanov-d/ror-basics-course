@@ -4,12 +4,12 @@ puts 'Итак, как тебя зовут?'
 name = gets.chomp
 
 puts "Очень приятно, #{name}! А какой у тебя рост в сантиметрах?"
-height = gets.chomp.to_i
-abort 'Рост должен быть целым положительным числом!' if height <= 0
+height = gets.chomp.to_f
+abort 'Рост должен быть положительным числом!' if height <= 0
 
 puts 'Ага. А теперь нескромный вопрос: сколько ты весишь в килограммах?'
-actual_weight = gets.chomp.to_i
-abort 'Вес должен быть целым положительным числом!' if actual_weight <= 0
+actual_weight = gets.chomp.to_f
+abort 'Вес должен быть положительным числом!' if actual_weight <= 0
 
 perfect_weight = height - 110
 
