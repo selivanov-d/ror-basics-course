@@ -17,10 +17,10 @@ end
 if triangle_sides.uniq.length == 1
   puts 'Треугольник равносторонний'
 else
-  triangle_sides.sort! # сортируем стороны по возрастанию, чтобы можно было выбрать гипотенузу (самую длинную сторону треугольника)
+  triangle_sides.sort! # сортируем стороны по возрастанию, чтобы можно было выбрать гипотенузу (самую длинную сторону треугольника) и катеты
 
-  hypotenuse = triangle_sides.pop
-  catheti = triangle_sides
+  hypotenuse = triangle_sides[-1]
+  catheti = triangle_sides[0, 2]
 
   if (catheti[0]**2 + catheti[1]**2) == hypotenuse**2
     puts 'Треугольник прямоугольный!'
