@@ -2,7 +2,7 @@ class Route
   attr_reader :start_station, :finish_station
 
   def initialize(start_station_name, finish_station_name)
-    unless (start_station_name.class == String) && (finish_station_name.class == String)
+    unless (start_station_name.is_a? String) && (finish_station_name.is_a? String)
       abort 'Для создания начальной и конечной станции маршрута нужно указать их названия!'
     end
 
@@ -15,30 +15,32 @@ class Route
     abort "Станция \"#{name}\" уже есть в этом маршруте!" if stations_list.keys.include? name
 
     @in_between_stations[name] = Station.new name
+
+    @full_stations_list = nil
   end
 
   def stations_list
-    full_stations_list = {}
+    @full_stations_list ||= {}
 
-    full_stations_list[@start_station.name] = @start_station
+    if @full_stations_list.empty?
+      @full_stations_list[@start_station.name] = @start_station
 
-    @in_between_stations.each do |station_name, station|
-      full_stations_list[station_name] = station
+      @in_between_stations.each do |station_name, station|
+        @full_stations_list[station_name] = station
+      end
+
+      @full_stations_list[@finish_station.name] = @finish_station
     end
 
-    full_stations_list[@finish_station.name] = @finish_station
-    full_stations_list
+    @full_stations_list
   end
 
   def get_station_by_name(name)
     stations_list[name]
   end
 
-  # написать, что намучался с методом
   def to_s
-    result = []
-
-    stations_list.each_key do |station_name|
+    result = stations_list.inject([]) do |result, (station_name, station)|
       result << station_name
     end
 

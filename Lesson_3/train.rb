@@ -2,14 +2,14 @@ class Train
   attr_accessor :current_station, :route
   attr_reader :number, :type, :carriage_count, :current_speed
 
-  TRAIN_TYPES = {
+  TYPES = {
     freight: 'Грузовой',
     passenger: 'Пассажирский'
   }
 
   def initialize(number, type, carriage_count)
     abort 'Имя поезда должно быть строкой или числом!' unless self.class.valid_name?(number)
-    abort 'Неизвестный тип поезда! Поезда бывают только грузовые и пассажирские.' unless Train::TRAIN_TYPES.values.include? type
+    abort 'Неизвестный тип поезда! Поезда бывают только грузовые и пассажирские.' unless self.class.valid_type? type
     abort 'Количество вагонов должно быть больше или равно нулю!' unless carriage_count.to_i >= 0
 
     @number = number
@@ -21,7 +21,7 @@ class Train
   end
 
   def accelerate(delta)
-    unless ([Fixnum, Float].include? delta.class) && (delta > 0)
+    unless (delta.is_a? Numeric) && (delta > 0)
       abort 'Увеличение скорости можно задавать только положительным числом!'
     end
 
@@ -59,7 +59,7 @@ class Train
   end
 
   def route=(route)
-    abort 'Поезду нужен маршрут правильного формата!' unless route.class == Route
+    abort 'Поезду нужен маршрут правильного формата!' unless route.instance_of? Route
 
     if @route.nil?
       @route = route
@@ -76,7 +76,11 @@ class Train
   end
 
   def self.valid_name?(name)
-    name.class == String || name.to_i > 0
+    (name.instance_of? String) || (name.to_i > 0)
+  end
+
+  def self.valid_type?(type)
+    Train::TYPES.values.include? type
   end
 
   def to_s
@@ -101,6 +105,6 @@ class Train
   end
 
   def route_set?
-    @route.class == Route
+    @route.instance_of? Route
   end
 end
