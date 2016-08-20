@@ -2,7 +2,7 @@ class Route
   attr_reader :start_station, :finish_station
 
   def initialize(start_station_name, finish_station_name)
-    unless (start_station_name.is_a? String) && (finish_station_name.is_a? String)
+    unless [start_station_name, finish_station_name].all? { |name| name.instance_of? String }
       abort 'Для создания начальной и конечной станции маршрута нужно указать их названия!'
     end
 
