@@ -72,10 +72,6 @@ class Train
     (name.instance_of? String) || (name.to_i > 0)
   end
 
-  def self.valid_type?(type)
-    Train::TYPES.values.include? type
-  end
-
   def station_in_route?(name)
     @route.stations_list.keys.include? name
   end
