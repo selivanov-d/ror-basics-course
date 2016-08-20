@@ -10,7 +10,7 @@ class DispatcherInterface
   end
 
   def run
-    InterfaceHelper::flash_message "--- Симулятор РЖД ---\nТолько плацкарт, только хардкор!!!"
+    InterfaceHelper.flash_message "--- Симулятор РЖД ---\nТолько плацкарт, только хардкор!!!"
 
     show_main_screen
   end
@@ -26,13 +26,13 @@ class DispatcherInterface
     valid_command = false
 
     until valid_command
-      InterfaceHelper::clear_console
+      InterfaceHelper.clear_console
 
       puts 'Возможные действия:'
 
-      InterfaceHelper::generate_menu({1 => 'Управление поездами', 2 => 'Управление станциями'})
+      InterfaceHelper.generate_menu({1 => 'Управление поездами', 2 => 'Управление станциями'})
 
-      InterfaceHelper::print_exit_button_and_prompt
+      InterfaceHelper.print_exit_button_and_prompt
 
       command = gets.chomp
 
@@ -48,7 +48,7 @@ class DispatcherInterface
           show_station_action_selection_dialog
           valid_command = true
         else
-          InterfaceHelper::flash_error
+          InterfaceHelper.flash_error
       end
     end
   end

@@ -1,17 +1,17 @@
 module TrainInterface
   private
   def show_new_train_type_selection_dialog
-    InterfaceHelper::clear_console
+    InterfaceHelper.clear_console
     valid_command = false
 
     until valid_command
-      InterfaceHelper::clear_console
+      InterfaceHelper.clear_console
 
       puts 'Какой тип поезда хотите создать?'
 
-      InterfaceHelper::generate_menu({1 => 'Пассажирский', 2 => 'Грузовой'})
+      InterfaceHelper.generate_menu({1 => 'Пассажирский', 2 => 'Грузовой'})
 
-      InterfaceHelper::print_back_button_and_prompt
+      InterfaceHelper.print_back_button_and_prompt
 
       command = gets.chomp
 
@@ -27,7 +27,7 @@ module TrainInterface
           valid_command = true
           type = :cargo_train
         else
-          InterfaceHelper::flash_error
+          InterfaceHelper.flash_error
       end
     end
 
@@ -38,10 +38,10 @@ module TrainInterface
     valid_command = false
 
     until valid_command
-      InterfaceHelper::clear_console
+      InterfaceHelper.clear_console
 
       puts 'Укажите номер нового поезда:'
-      InterfaceHelper::print_back_button_and_prompt
+      InterfaceHelper.print_back_button_and_prompt
 
       train_number = gets.chomp
 
@@ -57,7 +57,7 @@ module TrainInterface
       train.route = @route
 
       if @trains.key? train.number
-        InterfaceHelper::flash_error 'Такой поезд уже существует!'
+        InterfaceHelper.flash_error 'Такой поезд уже существует!'
       else
         valid_command = true
 
@@ -65,22 +65,22 @@ module TrainInterface
       end
     end
 
-    InterfaceHelper::flash_message "#{train.class::TYPE} поезд номер #{train.number} успешно создан!"
+    InterfaceHelper.flash_message "#{train.class::TYPE} поезд номер #{train.number} успешно создан!"
 
     show_train_action_selection_dialog
   end
 
   def show_train_action_selection_dialog
-    InterfaceHelper::clear_console
+    InterfaceHelper.clear_console
 
     valid_command = false
 
     puts 'С поездами можно сделать:'
 
     until valid_command
-      InterfaceHelper::generate_menu({1 => 'Создать поезд', 2 => 'Выбрать существующий поезд'})
+      InterfaceHelper.generate_menu({1 => 'Создать поезд', 2 => 'Выбрать существующий поезд'})
 
-      InterfaceHelper::print_back_button_and_prompt
+      InterfaceHelper.print_back_button_and_prompt
 
       command = gets.chomp
 
@@ -105,13 +105,13 @@ module TrainInterface
     valid_command = false
 
     until valid_command
-      InterfaceHelper::clear_console
+      InterfaceHelper.clear_console
       puts "Вы выбрали поезд #{train}."
       puts 'Что хотите сделать с этим поездом?'
 
-      InterfaceHelper::generate_menu({1 => 'Прицепить к нему вагон', 2 => 'Отцепить от него вагон', 3 => 'Направить на станцию'})
+      InterfaceHelper.generate_menu({1 => 'Прицепить к нему вагон', 2 => 'Отцепить от него вагон', 3 => 'Направить на станцию'})
 
-      InterfaceHelper::print_back_button_and_prompt
+      InterfaceHelper.print_back_button_and_prompt
 
       command = gets.chomp
 
@@ -130,9 +130,9 @@ module TrainInterface
 
           train.add_carriage(carriage)
 
-          InterfaceHelper::flash_message 'Вагон прицеплен!'
+          InterfaceHelper.flash_message 'Вагон прицеплен!'
         when 2
-          InterfaceHelper::clear_console
+          InterfaceHelper.clear_console
 
           if train.carriages.size > 0
             train.remove_last_carriage
@@ -147,19 +147,19 @@ module TrainInterface
 
           show_train_move_to_station_dialog(train)
         else
-          InterfaceHelper::flash_error
+          InterfaceHelper.flash_error
       end
     end
   end
 
   def show_existing_trains_selection_dialog
-    InterfaceHelper::clear_console
+    InterfaceHelper.clear_console
 
     if @trains.size > 0
       valid_command = false
 
       until valid_command
-        InterfaceHelper::clear_console
+        InterfaceHelper.clear_console
 
         puts 'Выберите один из стоящих под парами поездов по его номеру:'
 
@@ -167,7 +167,7 @@ module TrainInterface
           puts train
         end
 
-        InterfaceHelper::print_back_button_and_prompt
+        InterfaceHelper.print_back_button_and_prompt
 
         train_number = gets.chomp
 
@@ -182,18 +182,18 @@ module TrainInterface
 
           show_train_actions_screen(train)
         else
-          InterfaceHelper::flash_error 'Такого поезда нет!'
+          InterfaceHelper.flash_error 'Такого поезда нет!'
         end
       end
     else
-      InterfaceHelper::flash_error 'Нет ни одного поезда!'
+      InterfaceHelper.flash_error 'Нет ни одного поезда!'
 
       show_train_action_selection_dialog
     end
   end
 
   def show_train_move_to_station_dialog(train)
-    InterfaceHelper::clear_console
+    InterfaceHelper.clear_console
 
     if stations.size > 0
       puts 'На какую станцию отправить поезд?'
@@ -202,23 +202,23 @@ module TrainInterface
         puts station
       end
 
-      InterfaceHelper::print_back_button_and_prompt
+      InterfaceHelper.print_back_button_and_prompt
 
       command = gets.chomp
 
       if stations.key? command
         train.move_to_station(command)
 
-        InterfaceHelper::flash_message "Поезд перемещён на станцию #{command}"
+        InterfaceHelper.flash_message "Поезд перемещён на станцию #{command}"
 
         show_train_actions_screen(train)
       else
-        InterfaceHelper::flash_error 'Такой станции не существует!'
+        InterfaceHelper.flash_error 'Такой станции не существует!'
 
         show_train_move_to_station_dialog(train)
       end
     else
-      InterfaceHelper::flash_error 'Пока что никаких станций не создано!'
+      InterfaceHelper.flash_error 'Пока что никаких станций не создано!'
 
       show_train_actions_screen(train)
     end
