@@ -25,11 +25,11 @@ module InterfaceHelper
   end
 
   def self.flash_message(message)
-    unless message.nil?
-      clear_console
-      puts message
-      sleep 1
-    end
+    return if message.nil?
+
+    clear_console
+    puts message
+    sleep 1
   end
 
   def self.flash_error(message = 'Неправильная команда!')
