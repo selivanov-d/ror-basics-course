@@ -2,9 +2,10 @@ module TrainInterface
   private
   def show_new_train_type_selection_dialog
     InterfaceHelper.clear_console
-    valid_command = false
 
-    until valid_command
+    type = nil
+
+    loop do
       InterfaceHelper.clear_console
 
       puts 'Какой тип поезда хотите создать?'
@@ -21,11 +22,11 @@ module TrainInterface
 
       case command
         when 1
-          valid_command = true
           type = :passenger_train
+          break
         when 2
-          valid_command = true
           type = :cargo_train
+          break
         else
           InterfaceHelper.flash_error
       end
@@ -35,9 +36,9 @@ module TrainInterface
   end
 
   def show_new_train_creation_dialog(type)
-    valid_command = false
+    train = nil
 
-    until valid_command
+    loop do
       InterfaceHelper.clear_console
 
       puts 'Укажите номер нового поезда:'
@@ -59,9 +60,8 @@ module TrainInterface
       if @trains.key? train.number
         InterfaceHelper.flash_error 'Такой поезд уже существует!'
       else
-        valid_command = true
-
         @trains[train.number] = train
+        break
       end
     end
 
@@ -73,11 +73,9 @@ module TrainInterface
   def show_train_action_selection_dialog
     InterfaceHelper.clear_console
 
-    valid_command = false
-
     puts 'С поездами можно сделать:'
 
-    until valid_command
+    loop do
       InterfaceHelper.generate_menu({1 => 'Создать поезд', 2 => 'Выбрать существующий поезд'})
 
       InterfaceHelper.print_back_button_and_prompt
@@ -91,10 +89,10 @@ module TrainInterface
       case command
         when 1
           show_new_train_type_selection_dialog
-          valid_command = true
+          break
         when 2
           show_existing_trains_selection_dialog
-          valid_command = true
+          break
         else
           puts 'Неизвестная команда'
       end
@@ -102,9 +100,7 @@ module TrainInterface
   end
 
   def show_train_actions_screen(train)
-    valid_command = false
-
-    until valid_command
+    loop do
       InterfaceHelper.clear_console
       puts "Вы выбрали поезд #{train}."
       puts 'Что хотите сделать с этим поездом?'
@@ -143,9 +139,9 @@ module TrainInterface
 
           sleep 1
         when 3
-          valid_command = true
-
           show_train_move_to_station_dialog(train)
+
+          break
         else
           InterfaceHelper.flash_error
       end
@@ -156,9 +152,7 @@ module TrainInterface
     InterfaceHelper.clear_console
 
     if @trains.size > 0
-      valid_command = false
-
-      until valid_command
+      loop do
         InterfaceHelper.clear_console
 
         puts 'Выберите один из стоящих под парами поездов по его номеру:'
@@ -174,13 +168,12 @@ module TrainInterface
         show_train_action_selection_dialog if train_number == InterfaceHelper::COMMANDS[:back]
 
         if @trains.keys.include? train_number
-          valid_command = true
-
           train = @trains[train_number]
 
           puts train.class
 
           show_train_actions_screen(train)
+          break
         else
           InterfaceHelper.flash_error 'Такого поезда нет!'
         end

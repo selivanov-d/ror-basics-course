@@ -1,9 +1,7 @@
 module StationInterface
   private
   def show_station_action_selection_dialog
-    valid_command = false
-
-    until valid_command
+    loop do
       InterfaceHelper.clear_console
       puts 'Со станциями можно сделать следующее:'
 
@@ -19,14 +17,14 @@ module StationInterface
 
       case command
         when 1
-          valid_command = true
           show_station_creation_dialog
+          break
         when 2
-          valid_command = true
           show_stations_list
+          break
         when 3
-          valid_command = true
           show_station_train_list
+          break
         else
           InterfaceHelper.flash_error
       end
@@ -34,9 +32,7 @@ module StationInterface
   end
 
   def show_station_creation_dialog
-    valid_command = false
-
-    until valid_command
+    loop do
       InterfaceHelper.clear_console
 
       puts 'Какое название будет у станции?'
@@ -50,13 +46,13 @@ module StationInterface
       if stations.key? station_name
         InterfaceHelper.flash_error 'Такая станция уже существует!'
       else
-        valid_command = true
-
         @route.add_station(station_name)
 
         InterfaceHelper.flash_message "Станция #{station_name} создана!"
 
         show_station_action_selection_dialog
+
+        break
       end
     end
   end
@@ -64,10 +60,8 @@ module StationInterface
   def show_stations_list
     InterfaceHelper.clear_console
 
-    valid_command = false
-
     if stations.size > 0
-      until valid_command
+      loop do
         InterfaceHelper.clear_console
 
         puts 'Существуют следующие станции:'
@@ -81,8 +75,8 @@ module StationInterface
         command = gets.chomp
 
         if command == InterfaceHelper::COMMANDS[:back]
-          valid_command = true
           show_station_action_selection_dialog
+          break
         else
           InterfaceHelper.flash_error
         end
@@ -97,9 +91,7 @@ module StationInterface
   def show_station_train_list
     InterfaceHelper.clear_console
 
-    valid_command = false
-
-    until valid_command
+    loop do
       InterfaceHelper.clear_console
 
       if stations.size > 0
@@ -131,9 +123,9 @@ module StationInterface
 
             command = gets.chomp
 
-            valid_command = true
-
             show_station_action_selection_dialog if command == InterfaceHelper::COMMANDS[:back]
+
+            break
           else
             InterfaceHelper.flash_error 'На этой станции нет ни одного поезда.'
           end

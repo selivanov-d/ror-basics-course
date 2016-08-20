@@ -23,9 +23,7 @@ class DispatcherInterface
   # та же история с подключаемыми модулями-интерфейсами
   private
   def show_main_screen
-    valid_command = false
-
-    until valid_command
+    loop do
       InterfaceHelper.clear_console
 
       puts 'Возможные действия:'
@@ -36,6 +34,8 @@ class DispatcherInterface
 
       command = gets.chomp
 
+      InterfaceHelper.clear_console
+
       abort 'Спасибо, что воспользовались услугами нашей системы! Ту-ту!!!' if command == InterfaceHelper::COMMANDS[:exit]
 
       command = command.to_i
@@ -43,10 +43,10 @@ class DispatcherInterface
       case command
         when 1
           show_train_action_selection_dialog
-          valid_command = true
+          break
         when 2
           show_station_action_selection_dialog
-          valid_command = true
+          break
         else
           InterfaceHelper.flash_error
       end
