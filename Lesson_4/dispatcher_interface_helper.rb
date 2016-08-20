@@ -1,4 +1,4 @@
-module InterfaceHelper
+module DispatcherInterfaceHelper
   COMMANDS = {
       back: 'back',
       exit: 'exit'

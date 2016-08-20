@@ -7,7 +7,7 @@ require_relative 'passenger_carriage'
 require_relative 'cargo_train'
 require_relative 'passenger_train'
 
-require_relative 'interface_helper'
+require_relative 'dispatcher_interface_helper'
 require_relative 'train_interface'
 require_relative 'station_interface'
 

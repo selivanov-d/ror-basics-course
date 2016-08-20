@@ -10,7 +10,7 @@ class DispatcherInterface
   end
 
   def run
-    InterfaceHelper.flash_message "--- Симулятор РЖД ---\nТолько плацкарт, только хардкор!!!"
+    DispatcherInterfaceHelper.flash_message "--- Симулятор РЖД ---\nТолько плацкарт, только хардкор!!!"
 
     show_main_screen
   end
@@ -24,19 +24,19 @@ class DispatcherInterface
   private
   def show_main_screen
     loop do
-      InterfaceHelper.clear_console
+      DispatcherInterfaceHelper.clear_console
 
       puts 'Возможные действия:'
 
-      InterfaceHelper.generate_menu({1 => 'Управление поездами', 2 => 'Управление станциями'})
+      DispatcherInterfaceHelper.generate_menu({1 => 'Управление поездами', 2 => 'Управление станциями'})
 
-      InterfaceHelper.print_exit_button_and_prompt
+      DispatcherInterfaceHelper.print_exit_button_and_prompt
 
       command = gets.chomp
 
-      InterfaceHelper.clear_console
+      DispatcherInterfaceHelper.clear_console
 
-      abort 'Спасибо, что воспользовались услугами нашей системы! Ту-ту!!!' if command == InterfaceHelper::COMMANDS[:exit]
+      abort 'Спасибо, что воспользовались услугами нашей системы! Ту-ту!!!' if command == DispatcherInterfaceHelper::COMMANDS[:exit]
 
       command = command.to_i
 
@@ -48,7 +48,7 @@ class DispatcherInterface
           show_station_action_selection_dialog
           break
         else
-          InterfaceHelper.flash_error
+          DispatcherInterfaceHelper.flash_error
       end
     end
   end
