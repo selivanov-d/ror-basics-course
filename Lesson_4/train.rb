@@ -77,7 +77,7 @@ class Train
   end
 
   def route_set?
-    @route.instance_of? Route
+    !@route.nil?
   end
 
   def to_s
