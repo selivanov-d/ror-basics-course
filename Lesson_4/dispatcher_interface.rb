@@ -22,6 +22,10 @@ class DispatcherInterface
   # по сути, все методы, рисующие интерфейсы, будут приватными, чтобы их нельзя было вызывать ниоткуда, кроме метода DispatcherInterface.run -- единой точки входа в программу
   # та же история с подключаемыми модулями-интерфейсами
   private
+  def get_user_command
+    gets.chomp
+  end
+
   def show_main_screen
     loop do
       DispatcherInterfaceHelper.clear_console
@@ -32,7 +36,7 @@ class DispatcherInterface
 
       DispatcherInterfaceHelper.print_exit_button_and_prompt
 
-      command = gets.chomp
+      command = get_user_command
 
       DispatcherInterfaceHelper.clear_console
 

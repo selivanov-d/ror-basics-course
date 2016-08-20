@@ -9,7 +9,7 @@ module StationInterface
 
       DispatcherInterfaceHelper.print_back_button_and_prompt
 
-      command = gets.chomp
+      command = get_user_command
 
       show_main_screen if command == DispatcherInterfaceHelper::COMMANDS[:back]
 
@@ -39,7 +39,7 @@ module StationInterface
 
       DispatcherInterfaceHelper.print_back_button_and_prompt
 
-      station_name = gets.chomp
+      station_name = get_user_command
 
       show_station_action_selection_dialog if station_name == DispatcherInterfaceHelper::COMMANDS[:back]
 
@@ -72,7 +72,7 @@ module StationInterface
 
         DispatcherInterfaceHelper.print_back_button_and_prompt
 
-        command = gets.chomp
+        command = get_user_command
 
         if command == DispatcherInterfaceHelper::COMMANDS[:back]
           show_station_action_selection_dialog
@@ -103,7 +103,7 @@ module StationInterface
 
         DispatcherInterfaceHelper.print_back_button_and_prompt
 
-        station_name = gets.chomp
+        station_name = get_user_command
 
         show_station_action_selection_dialog if station_name == DispatcherInterfaceHelper::COMMANDS[:back]
 
@@ -121,7 +121,7 @@ module StationInterface
 
             DispatcherInterfaceHelper.print_back_button_and_prompt
 
-            command = gets.chomp
+            command = get_user_command
 
             show_station_action_selection_dialog if command == DispatcherInterfaceHelper::COMMANDS[:back]
 

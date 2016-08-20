@@ -14,7 +14,7 @@ module TrainInterface
 
       DispatcherInterfaceHelper.print_back_button_and_prompt
 
-      command = gets.chomp
+      command = get_user_command
 
       show_train_action_selection_dialog if command == DispatcherInterfaceHelper::COMMANDS[:back]
 
@@ -44,7 +44,7 @@ module TrainInterface
       puts 'Укажите номер нового поезда:'
       DispatcherInterfaceHelper.print_back_button_and_prompt
 
-      train_number = gets.chomp
+      train_number = get_user_command
 
       show_new_train_type_selection_dialog if train_number == DispatcherInterfaceHelper::COMMANDS[:back]
 
@@ -80,7 +80,7 @@ module TrainInterface
 
       DispatcherInterfaceHelper.print_back_button_and_prompt
 
-      command = gets.chomp
+      command = get_user_command
 
       show_main_screen if command == DispatcherInterfaceHelper::COMMANDS[:back]
 
@@ -109,7 +109,7 @@ module TrainInterface
 
       DispatcherInterfaceHelper.print_back_button_and_prompt
 
-      command = gets.chomp
+      command = get_user_command
 
       show_existing_trains_selection_dialog if command == DispatcherInterfaceHelper::COMMANDS[:back]
 
@@ -163,7 +163,7 @@ module TrainInterface
 
         DispatcherInterfaceHelper.print_back_button_and_prompt
 
-        train_number = gets.chomp
+        train_number = get_user_command
 
         show_train_action_selection_dialog if train_number == DispatcherInterfaceHelper::COMMANDS[:back]
 
@@ -197,7 +197,7 @@ module TrainInterface
 
       DispatcherInterfaceHelper.print_back_button_and_prompt
 
-      command = gets.chomp
+      command = get_user_command
 
       if stations.key? command
         train.move_to_station(command)
