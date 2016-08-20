@@ -2,16 +2,16 @@ module StationInterface
   private
   def show_station_action_selection_dialog
     loop do
-      DispatcherInterfaceHelper.clear_console
-      puts 'Со станциями можно сделать следующее:'
+      clear_console
+      print_message(%w(station interface header_actions_options))
 
-      DispatcherInterfaceHelper.generate_menu({1 => 'Добавить станцию', 2 => 'Список станций', 3 => 'Посмотреть список поездов на станции'})
+      generate_menu({1 => get_message(%w(station interface button_create_station)), 2 => get_message(%w(station interface button_stations_list)), 3 => get_message(%w(station interface button_station_trains_list))})
 
-      DispatcherInterfaceHelper.print_back_button_and_prompt
+      print_back_button_and_prompt
 
       command = get_user_command
 
-      show_main_screen if command == DispatcherInterfaceHelper::COMMANDS[:back]
+      show_main_screen if command == get_message(%w(interface command back))
 
       command = command.to_i
 
@@ -26,29 +26,29 @@ module StationInterface
           show_station_train_list
           break
         else
-          DispatcherInterfaceHelper.flash_error
+          flash_error
       end
     end
   end
 
   def show_station_creation_dialog
     loop do
-      DispatcherInterfaceHelper.clear_console
+      clear_console
 
-      puts 'Какое название будет у станции?'
+      print_message(%w(station interface header_new_station))
 
-      DispatcherInterfaceHelper.print_back_button_and_prompt
+      print_back_button_and_prompt
 
       station_name = get_user_command
 
-      show_station_action_selection_dialog if station_name == DispatcherInterfaceHelper::COMMANDS[:back]
+      show_station_action_selection_dialog if station_name == get_message(%w(interface command back))
 
       if stations.key? station_name
-        DispatcherInterfaceHelper.flash_error 'Такая станция уже существует!'
+        flash_error(%w(station interface message_such_station_already_exists))
       else
         @route.add_station(station_name)
 
-        DispatcherInterfaceHelper.flash_message "Станция #{station_name} создана!"
+        flash_message(%w(station interface message_station_created), {station_name: station_name})
 
         show_station_action_selection_dialog
 
@@ -58,82 +58,80 @@ module StationInterface
   end
 
   def show_stations_list
-    DispatcherInterfaceHelper.clear_console
+    clear_console
 
     if stations.size > 0
       loop do
-        DispatcherInterfaceHelper.clear_console
+        clear_console
 
-        puts 'Существуют следующие станции:'
+        print_message(%w(station interface header_following_stations_exists))
 
         @route.stations_list.each_value do |station|
           puts station
         end
 
-        DispatcherInterfaceHelper.print_back_button_and_prompt
+        print_back_button_and_prompt
 
         command = get_user_command
 
-        if command == DispatcherInterfaceHelper::COMMANDS[:back]
+        if command == get_message(%w(interface command back))
           show_station_action_selection_dialog
           break
         else
-          DispatcherInterfaceHelper.flash_error
+          flash_error
         end
       end
     else
-      DispatcherInterfaceHelper.flash_error 'Пока что не создано ни одной станции!'
+      flash_error(%w(station interface message_no_stations_exists))
 
       show_station_action_selection_dialog
     end
   end
 
   def show_station_train_list
-    DispatcherInterfaceHelper.clear_console
-
     loop do
-      DispatcherInterfaceHelper.clear_console
+      clear_console
 
       if stations.size > 0
-        puts 'Выберите станцию на которой вы хотите посмотреть список поездов:'
+        print_message(%w(station interface header_choose_station_for_trains_list))
 
         stations.each_value do |station|
           puts station
         end
 
-        DispatcherInterfaceHelper.print_back_button_and_prompt
+        print_back_button_and_prompt
 
         station_name = get_user_command
 
-        show_station_action_selection_dialog if station_name == DispatcherInterfaceHelper::COMMANDS[:back]
+        show_station_action_selection_dialog if station_name == get_message(%w(interface command back))
 
         if stations.key? station_name
-          DispatcherInterfaceHelper.clear_console
+          clear_console
 
           station = stations[station_name]
 
           if station.trains_list.size > 0
-            puts 'На станции находятся следующие поезда:'
+            print_message(%w(station interface header_trains_list))
 
             station.trains_list.each_value do |train|
               puts train
             end
 
-            DispatcherInterfaceHelper.print_back_button_and_prompt
+            print_back_button_and_prompt
 
             command = get_user_command
 
-            show_station_action_selection_dialog if command == DispatcherInterfaceHelper::COMMANDS[:back]
+            show_station_action_selection_dialog if command == get_message(%w(interface command back))
 
             break
           else
-            DispatcherInterfaceHelper.flash_error 'На этой станции нет ни одного поезда.'
+            flash_error(%w(station interface message_no_trains_on_this_station))
           end
         else
-          DispatcherInterfaceHelper.flash_error 'Нет такой станции!'
+          flash_error(%w(station interface message_no_such_station))
         end
       else
-        DispatcherInterfaceHelper.flash_error 'Пока что не создано ни одной станции!'
+        flash_error(%w(station interface message_no_stations_exists))
 
         show_station_action_selection_dialog
       end

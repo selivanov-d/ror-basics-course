@@ -1,22 +1,22 @@
 module TrainInterface
   private
   def show_new_train_type_selection_dialog
-    DispatcherInterfaceHelper.clear_console
+    clear_console
 
     type = nil
 
     loop do
-      DispatcherInterfaceHelper.clear_console
+      clear_console
 
-      puts 'Какой тип поезда хотите создать?'
+      print_message(%w(train interface header_what_train_type_to_create))
 
-      DispatcherInterfaceHelper.generate_menu({1 => 'Пассажирский', 2 => 'Грузовой'})
+      generate_menu({1 => get_message(%w(train passenger type)), 2 => get_message(%w(train cargo type))})
 
-      DispatcherInterfaceHelper.print_back_button_and_prompt
+      print_back_button_and_prompt
 
       command = get_user_command
 
-      show_train_action_selection_dialog if command == DispatcherInterfaceHelper::COMMANDS[:back]
+      show_train_action_selection_dialog if command == get_message(%w(interface command back))
 
       command = command.to_i
 
@@ -28,7 +28,7 @@ module TrainInterface
           type = :cargo_train
           break
         else
-          DispatcherInterfaceHelper.flash_error
+          flash_error
       end
     end
 
@@ -39,14 +39,15 @@ module TrainInterface
     train = nil
 
     loop do
-      DispatcherInterfaceHelper.clear_console
+      clear_console
 
-      puts 'Укажите номер нового поезда:'
-      DispatcherInterfaceHelper.print_back_button_and_prompt
+      print_message(%w(train interface header_enter_new_train_number))
+
+      print_back_button_and_prompt
 
       train_number = get_user_command
 
-      show_new_train_type_selection_dialog if train_number == DispatcherInterfaceHelper::COMMANDS[:back]
+      show_new_train_type_selection_dialog if train_number == get_message(%w(interface command back))
 
       case type
         when :passenger_train
@@ -58,31 +59,31 @@ module TrainInterface
       train.route = @route
 
       if @trains.key? train.number
-        DispatcherInterfaceHelper.flash_error 'Такой поезд уже существует!'
+        flash_error(%w(train interface message_train_already_exists))
       else
         @trains[train.number] = train
         break
       end
     end
 
-    DispatcherInterfaceHelper.flash_message "#{train.class::TYPE} поезд номер #{train.number} успешно создан!"
+    flash_message(%w(train interface message_train_created_successfully), {train_type: train.class::TYPE, train_number: train.number})
 
     show_train_action_selection_dialog
   end
 
   def show_train_action_selection_dialog
-    DispatcherInterfaceHelper.clear_console
+    clear_console
 
-    puts 'С поездами можно сделать:'
+    print_message(%w(train interface header_trains_action_selection))
 
     loop do
-      DispatcherInterfaceHelper.generate_menu({1 => 'Создать поезд', 2 => 'Выбрать существующий поезд'})
+      generate_menu({1 => get_message(%w(train interface button_create_new_train)), 2 => get_message(%w(train interface button_pick_existing_train))})
 
-      DispatcherInterfaceHelper.print_back_button_and_prompt
+      print_back_button_and_prompt
 
       command = get_user_command
 
-      show_main_screen if command == DispatcherInterfaceHelper::COMMANDS[:back]
+      show_main_screen if command == get_message(%w(interface command back))
 
       command = command.to_i
 
@@ -94,24 +95,24 @@ module TrainInterface
           show_existing_trains_selection_dialog
           break
         else
-          puts 'Неизвестная команда'
+          flash_error
       end
     end
   end
 
   def show_train_actions_screen(train)
     loop do
-      DispatcherInterfaceHelper.clear_console
-      puts "Вы выбрали поезд #{train}."
-      puts 'Что хотите сделать с этим поездом?'
+      clear_console
+      print_message(%w(train interface header_you_choose_train),  {train_name: train.number})
+      print_message(%w(train interface header_action_selection))
 
-      DispatcherInterfaceHelper.generate_menu({1 => 'Прицепить к нему вагон', 2 => 'Отцепить от него вагон', 3 => 'Направить на станцию'})
+      generate_menu({1 => get_message(%w(train interface button_add_carriage)), 2 => get_message(%w(train interface button_remove_carriage)), 3 => get_message(%w(train interface button_send_to_station))})
 
-      DispatcherInterfaceHelper.print_back_button_and_prompt
+      print_back_button_and_prompt
 
       command = get_user_command
 
-      show_existing_trains_selection_dialog if command == DispatcherInterfaceHelper::COMMANDS[:back]
+      show_existing_trains_selection_dialog if command == get_message(%w(interface command back))
 
       command = command.to_i
 
@@ -126,15 +127,15 @@ module TrainInterface
 
           train.add_carriage(carriage)
 
-          DispatcherInterfaceHelper.flash_message 'Вагон прицеплен!'
+          flash_message(%w(train interface message_carriage_added))
         when 2
-          DispatcherInterfaceHelper.clear_console
+          clear_console
 
           if train.carriages.size > 0
             train.remove_last_carriage
-            puts 'Последний вагон отцеплен!'
+            print_message(%w(train interface message_last_carriage_removed))
           else
-            puts 'В этом поезде уже нет вагонов!'
+            print_message(%w(train interface message_no_carriages_in_this_train))
           end
 
           sleep 1
@@ -143,29 +144,29 @@ module TrainInterface
 
           break
         else
-          DispatcherInterfaceHelper.flash_error
+          flash_error
       end
     end
   end
 
   def show_existing_trains_selection_dialog
-    DispatcherInterfaceHelper.clear_console
+    clear_console
 
     if @trains.size > 0
       loop do
-        DispatcherInterfaceHelper.clear_console
+        clear_console
 
-        puts 'Выберите один из стоящих под парами поездов по его номеру:'
+        print_message(%w(train interface header_choose_train))
 
         @trains.each_value do |train|
           puts train
         end
 
-        DispatcherInterfaceHelper.print_back_button_and_prompt
+        print_back_button_and_prompt
 
         train_number = get_user_command
 
-        show_train_action_selection_dialog if train_number == DispatcherInterfaceHelper::COMMANDS[:back]
+        show_train_action_selection_dialog if train_number == get_message(%w(interface command back))
 
         if @trains.keys.include? train_number
           train = @trains[train_number]
@@ -175,43 +176,43 @@ module TrainInterface
           show_train_actions_screen(train)
           break
         else
-          DispatcherInterfaceHelper.flash_error 'Такого поезда нет!'
+          flash_error(%w(train interface message_no_such_train))
         end
       end
     else
-      DispatcherInterfaceHelper.flash_error 'Нет ни одного поезда!'
+      flash_error(%w(train interface message_no_trains_exists))
 
       show_train_action_selection_dialog
     end
   end
 
   def show_train_move_to_station_dialog(train)
-    DispatcherInterfaceHelper.clear_console
+    clear_console
 
     if stations.size > 0
-      puts 'На какую станцию отправить поезд?'
+      print_message(%w(train interface header_choose_station_for_train_to_send))
 
       stations.each_value do |station|
         puts station
       end
 
-      DispatcherInterfaceHelper.print_back_button_and_prompt
+      print_back_button_and_prompt
 
       command = get_user_command
 
       if stations.key? command
         train.move_to_station(command)
 
-        DispatcherInterfaceHelper.flash_message "Поезд перемещён на станцию #{command}"
+        flash_message(%w(train interface message_train_moved_to_station), {station_name: command})
 
         show_train_actions_screen(train)
       else
-        DispatcherInterfaceHelper.flash_error 'Такой станции не существует!'
+        flash_error(%w(station interface message_no_such_station))
 
         show_train_move_to_station_dialog(train)
       end
     else
-      DispatcherInterfaceHelper.flash_error 'Пока что никаких станций не создано!'
+      flash_error(%w(station interface message_no_stations_exists))
 
       show_train_actions_screen(train)
     end

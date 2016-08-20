@@ -1,16 +1,20 @@
 class DispatcherInterface
   include StationInterface
   include TrainInterface
+  include DispatcherInterfaceHelper
+
+  require 'yaml'
 
   # В этом методе делаю фэйковый маршрут-заглушку, чтобы не усложнять и без того большой интерфейс.
   def initialize
     @trains = {}
     @carriages = {}
     @route = Route.new('Москва', 'Петушки')
+    @messages = YAML.load_file 'messages.yml'
   end
 
   def run
-    DispatcherInterfaceHelper.flash_message "--- Симулятор РЖД ---\nТолько плацкарт, только хардкор!!!"
+    flash_message(%w(interface intro))
 
     show_main_screen
   end
@@ -28,19 +32,19 @@ class DispatcherInterface
 
   def show_main_screen
     loop do
-      DispatcherInterfaceHelper.clear_console
+      clear_console
 
-      puts 'Возможные действия:'
+      print_message(%w(interface header_possible_actions))
 
-      DispatcherInterfaceHelper.generate_menu({1 => 'Управление поездами', 2 => 'Управление станциями'})
+      generate_menu({1 => get_message(%w(interface button_trains_management)), 2 => get_message(%w(interface button_stations_management))})
 
-      DispatcherInterfaceHelper.print_exit_button_and_prompt
+      print_exit_button_and_prompt
 
       command = get_user_command
 
-      DispatcherInterfaceHelper.clear_console
+      clear_console
 
-      abort 'Спасибо, что воспользовались услугами нашей системы! Ту-ту!!!' if command == DispatcherInterfaceHelper::COMMANDS[:exit]
+      abort get_message(%w(interface exit)) if command == get_message(%w(interface command exit))
 
       command = command.to_i
 
@@ -52,7 +56,7 @@ class DispatcherInterface
           show_station_action_selection_dialog
           break
         else
-          DispatcherInterfaceHelper.flash_error
+          flash_error
       end
     end
   end
