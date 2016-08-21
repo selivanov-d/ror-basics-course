@@ -4,6 +4,6 @@ class PassengerTrain < Train
   def add_carriage(carriage)
     abort 'К пассажирскому поезду можно прицепить только пассажирские вагоны!' unless carriage.instance_of? PassengerCarriage
 
-    super(carriage)
+    super
   end
 end
