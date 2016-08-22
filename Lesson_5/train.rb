@@ -5,7 +5,7 @@ class Train
   attr_reader :carriages, :number, :route
   attr_writer :current_station
 
-  @@trains = {}
+  @@instances = {}
 
   def initialize(number)
     abort 'Имя поезда должно быть строкой или числом!' unless self.class.valid_name?(number)
@@ -16,7 +16,7 @@ class Train
     @current_station = nil
     @route = nil
 
-    @@trains[self.number] = self
+    @@instances[self.number] = self
 
     register_instance
   end
@@ -94,7 +94,11 @@ class Train
   end
 
   def self.find(number)
-    @@trains[number]
+    @@instances[number]
+  end
+
+  def self.instances
+    @@instances
   end
 
   # нижеследующие методы вызываются только из Train.move_to_station
