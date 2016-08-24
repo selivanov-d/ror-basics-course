@@ -1,0 +1,6 @@
+module StationInterface
+  private
+
+
+
+end
