@@ -1,4 +1,0 @@
-module TrainInterface
-  private
-
-end

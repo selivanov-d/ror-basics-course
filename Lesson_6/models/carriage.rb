@@ -1,4 +1,3 @@
-class Carriage
+class Carriage < Model
   include Manufacturer
-  include Validator
 end

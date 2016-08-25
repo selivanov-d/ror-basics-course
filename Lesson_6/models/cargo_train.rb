@@ -1,9 +1,9 @@
 class CargoTrain < Train
-  TYPE = I18n.t(:type, scope: [:train, :cargo])
+  TYPE = get_message({path: [:train, :cargo, :type]})
 
   def add_carriage(carriage)
     unless carriage.instance_of? CargoCarriage
-      raise StandardError.new(I18n.t(:message_wrong_type_carriage, scope: [:train, :cargo, :error]))
+      raise ArgumentError.new(get_message({path: [:train, :cargo, :error, :message_wrong_type_carriage]}))
     end
 
     super

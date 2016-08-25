@@ -1,9 +1,8 @@
-class Train
+class Train < Model
   include Manufacturer
   include InstanceCounter
-  include Validator
 
-  NUMBER_FORMAT = '/^[\w\dа-я]{3}-?[\w\dа-я]{2}$/i'
+  NUMBER_FORMAT = /^[\w\dа-я]{3}-?[\w\dа-я]{2}$/i
 
   attr_reader :carriages, :number, :route
   attr_writer :current_station
@@ -11,11 +10,9 @@ class Train
   @@instances = {}
 
   def initialize(number)
-    abort 'Имя поезда должно быть строкой или числом!' unless self.class.valid_name?(number)
-
     @number = number
 
-    # validate!
+    validate!
 
     @carriages = []
     @current_speed = 0
@@ -29,7 +26,7 @@ class Train
 
   def accelerate(delta)
     unless (delta.is_a? Numeric) && (delta > 0)
-      abort 'Увеличение скорости можно задавать только положительным числом!'
+      raise ArgumentError.new(get_message({path: [:train, :validation, :wrong_acceleration_delta_given]}))
     end
 
     @current_speed += delta
@@ -40,15 +37,13 @@ class Train
   end
 
   def add_carriage(carriage)
-    abort 'Нельзя прицепить вагон к движущемуся поезду!' if moves?
+    raise RuntimeError.new(get_message({path: [:train, :error, :message_carriage_attach_error]})) if moves?
 
     @carriages << carriage
   end
 
-  # не уверен, что есть смысл заморачиваться с возможностью выбора конкретного вагона для удаления
-  # посему, упростил себе задачи и этот метод просто удаляет последний вагон из поезда
   def remove_last_carriage
-    abort 'Нельзя отцепить вагон от движущегося поезда!' if moves?
+    raise RuntimeError.new(get_message({path: [:train, :error, :message_carriage_detach_error]})) if moves?
 
     @carriages = @carriages[0...-1]
   end
@@ -59,7 +54,7 @@ class Train
 
   def move_to_station(name)
     unless route_set? || station_in_route?(name)
-      abort "Поезд #{@number} не может поехать на станцию #{name}, т.к. её нет в его маршруте!"
+      raise RuntimeError.new(get_message({path: [:train, :error, :given_station_not_found_in_route]}))
     end
 
     depart_from_station
@@ -67,24 +62,18 @@ class Train
   end
 
   def route=(route)
-    abort 'Поезду нужен маршрут правильного формата!' unless route.instance_of? Route
+    raise ArgumentError.new(get_message({path: [:train, :error, :wrong_route_format_given]})) unless route.instance_of? Route
 
-    if @route.nil?
-      @route = route
-    else
+    unless @route.nil?
       unless @current_station.name == route.start_station.name
-        abort 'Нельзя присвоить поезду новый маршрут если он не начинается со станции, на которой поезд находится!'
+        raise RuntimeError.new(get_message({path: [:train, :error, :cannot_assign_new_route_wrong_start_station]}))
       end
-
-      @route = route
     end
+
+    @route = route
 
     @current_station = @route.start_station
     @route.start_station.take_train_in(self)
-  end
-
-  def self.valid_name?(name)
-    (name.instance_of? String) || (name.to_i > 0)
   end
 
   def station_in_route?(name)
@@ -107,12 +96,6 @@ class Train
     @@instances
   end
 
-  def valid?
-    validate!
-  end
-
-  # нижеследующие методы вызываются только из Train.move_to_station
-  # сделано так для того, чтобы нельзя было добавить поезд на станцию не удалив предварительно с текущей
   private
   def depart_from_station
     station = @route.get_station_by_name(@current_station.name)
@@ -127,6 +110,8 @@ class Train
   end
 
   def validate!
-    raise StandardError unless validate_format NUMBER_FORMAT, @number
+    if (@number =~ NUMBER_FORMAT) == nil
+      raise RuntimeError.new(get_message({path: [:train, :validation, :wrong_number_format]}))
+    end
   end
 end

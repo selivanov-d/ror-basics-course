@@ -1,18 +1,23 @@
-class Route
+class Route < Model
   attr_reader :start_station, :finish_station
 
-  def initialize(start_station_name, finish_station_name)
-    # validate!
+  def initialize(start_station, finish_station)
+    @start_station = start_station
+    @finish_station = finish_station
 
-    @start_station = Station.new start_station_name
-    @finish_station = Station.new finish_station_name
     @in_between_stations = {}
+
+    validate!
   end
 
-  def add_station(name)
-    raise I18n.t(:message_such_station_already_exists, scope: [:station, :error]) if stations_list.keys.include? name
+  def add_station(station)
+    raise ArgumentError.new(get_message({path: [:route, :error, :message_wrong_station_type_giveт]})) unless station.instance_of? Station
 
-    @in_between_stations[name] = Station.new name
+    if stations_list.keys.include? station.name
+      raise RuntimeError.new(get_message({path: [:station, :error, :message_such_station_already_exists]}))
+    end
+
+    @in_between_stations[station.name] = station
 
     @full_stations_list = nil
   end
@@ -42,15 +47,17 @@ class Route
   end
 
   def delete_station(name)
-    raise I18n.t(:message_cannot_delete_station, scope: [:station, :error]) unless @in_between_stations.keys.include? name
+    unless @in_between_stations.keys.include? name
+      raise RuntimeError.new(get_message({path: [:station, :error, :message_cannot_delete_station]}))
+    end
 
     @in_between_stations.delete name
   end
 
-  # private
-  # def validate!
-  #   unless [start_station_name, finish_station_name].all? { |name| name.instance_of? String }
-  #     abort 'Для создания начальной и конечной станции маршрута нужно указать их названия!'
-  #   end
-  # end
+  private
+  def validate!
+    unless stations_list.values.all? { |station| station.instance_of? Station }
+      raise RuntimeError.new(get_message({path: [:route, :validation, :wrong_station_type_in_route]}))
+    end
+  end
 end
