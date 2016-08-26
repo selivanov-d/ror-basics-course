@@ -3,7 +3,7 @@ module Views
   include TranslationHelper
 
   def render(view_name, view_vars = {})
-    raise 'Имя вида должно быть символом!' unless view_name.instance_of? Symbol
+    abort 'Имя вида должно быть символом!' unless view_name.instance_of? Symbol
 
     if view_vars.empty?
       self.send view_name
@@ -13,7 +13,7 @@ module Views
   end
 
   private
-  # главный экран программы
+  # главный экран
   def main_screen
     print_message({path: [:interface, :header_possible_actions]})
 
@@ -37,6 +37,7 @@ module Views
     print_back_button_and_prompt
   end
 
+  # экран со списком всех существующих поездов
   def trains_list
     print_message({path: [:train, :interface, :header_choose_train]})
 
@@ -146,7 +147,7 @@ module Views
     print_back_button_and_prompt
   end
 
-
+  # список существующих поездов
   def existing_trains_selection
     print_message({path: [:train, :interface, :header_choose_train]})
 

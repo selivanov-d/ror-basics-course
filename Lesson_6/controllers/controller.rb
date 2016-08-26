@@ -2,7 +2,7 @@ class ApplicationController
   include Views
 
   # не придумал, как можно сделать навигацию по экранам без того, чтобы задать весь маршрут вручную
-  MAP = {
+  SCREENS_MAP = {
       main_screen: [:train_action_selection, :station_action_selection],
       train_action_selection: [:new_train_type_selection, :existing_trains_selection],
       new_train_type_selection: [:new_train_creation_dialog],
@@ -17,11 +17,7 @@ class ApplicationController
   }
 
   def initialize
-    @carriages = {}
-
     @route = Route.new(Station.new('Москва'), Station.new('Петушки'))
-
-    # load_translation
   end
 
   def run
@@ -252,10 +248,10 @@ class ApplicationController
   end
 
   def find_back_screen(current_screen)
-    hash = MAP.select do |key, value|
+    map_part_hash = SCREENS_MAP.find do |key, value|
       value.include? current_screen
     end
 
-    hash.keys[0]
+    map_part_hash[0]
   end
 end

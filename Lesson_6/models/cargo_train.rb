@@ -1,6 +1,8 @@
 class CargoTrain < Train
   def initialize(number)
     @type = get_message({path: [:train, :cargo, :type]})
+
+    super
   end
 
   def add_carriage(carriage)
