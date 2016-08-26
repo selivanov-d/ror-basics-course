@@ -1,0 +1,94 @@
+interface:
+  intro: "--- Симулятор РЖД ---\nТолько плацкарт, только хардкор!!!"
+  header_possible_actions: 'Возможные действия:'
+  button_trains_management: Управление поездами
+  button_stations_management: Управление станциями
+  button_back: '[назад] -- Вернуться назад'
+  button_exit: '[выход] -- Выйти из программы'
+  exit: Спасибо, что воспользовались услугами нашей системы! Ту-ту!!!
+
+  command:
+    back: назад
+    exit: выход
+
+route:
+  error:
+    message_wrong_station_type_given: Нельзя добавить в маршрут ничего кроме станций
+
+  validation:
+    wrong_station_type_in_route: Что-то не так минимум c одной из станций маршрута! Вероятно, она неправильного типа.
+
+train:
+  passenger:
+    type: Пассажирский
+
+    error:
+      message_wrong_type_carriage: К пассажирскому поезду можно прицепить только пассажирские вагоны!
+  cargo:
+    type: Грузовой
+
+    error:
+      message_wrong_type_carriage: К грузовому поезду можно прицепить только грузовые вагоны!
+
+  interface:
+    header_what_train_type_to_create: Какой тип поезда хотите создать?
+    header_enter_new_train_number: Укажите номер нового поезда
+    header_choose_train: 'Выберите один из стоящих под парами поездов по его номеру:'
+    header_choose_station_for_train_to_send: На какую станцию отправить поезд?
+    header_action_selection: Что хотите сделать с этим поездом?
+    header_trains_action_selection: 'С поездами можно сделать:'
+    header_you_choose_train: "Вы выбрали поезд %{train_name}."
+    message_carriage_added: Вагон прицеплен!
+    message_last_carriage_removed: Последний вагон отцеплен!
+    message_no_carriages_in_this_train: В этом поезде уже нет вагонов!
+    message_train_created_successfully: "%{train_type} поезд номер %{train_number} успешно создан!"
+    message_no_such_train: Такого поезда нет!
+    message_no_trains_exists: Нет ни одного поезда!
+    message_train_moved_to_station: "Поезд перемещён на станцию %{station_name}."
+    message_train_already_exists: Такой поезд уже существует!
+    button_add_carriage: Прицепить к нему вагон
+    button_pick_existing_train: Выбрать существующий поезд
+    button_create_new_train: Создать поезд
+    button_remove_carriage: Отцепить от него вагон
+    button_send_to_station: Направить на станцию
+
+    error:
+      message_carriage_attach_error: Нельзя прицепить вагон к движущемуся поезду!
+      message_carriage_detach_error: Нельзя отцепить вагон от движущегося поезда!
+      wrong_route_format_given: Поезду нужен маршрут правильного формата!
+      cannot_assign_new_route_wrong_start_station: Нельзя присвоить поезду новый маршрут если он не начинается со станции, на которой поезд находится!
+      given_station_not_found_in_route: "Поезд %{train_number} не может поехать на станцию %{station_name}, т.к. её нет в его маршруте!"
+
+  validation:
+    wrong_number_format: 'Неверный формат номера поезда! Должен быть "ххх-хх"'
+    wrong_acceleration_delta_given: Увеличение скорости можно задавать только положительным числом!
+
+station:
+  interface:
+    header_trains_list: 'На станции %{station_name} находятся следующие поезда:'
+    header_actions_options: 'Со станциями можно сделать следующее:'
+    header_new_station: Какое название будет у станции?
+    header_choose_station_for_trains_list: 'Выберите станцию на которой вы хотите посмотреть список поездов:'
+    header_following_stations_exists: 'Существуют следующие станции:'
+    header_trains_count: "На станции %{name} находится %{trains_count} поезд(а|ов):"
+    message_station_created: "Станция %{station_name} создана!"
+    message_no_trains_on_this_station: На этой станции нет ни одного поезда.
+    message_no_such_station: Нет такой станции!
+    message_no_stations_exists: Пока что не создано ни одной станции!
+    message_such_station_already_exists: Такая станция уже существует!
+    message_no_train_on_given_station: "На станции %{name} сейчас нет ни одного поезда."
+    button_create_station: Добавить станцию
+    button_stations_list: Список станций
+    button_station_trains_list: Посмотреть список поездов на станции
+
+    error:
+      message_wrong_train_type: Станция может принимать только поезда!
+      message_such_station_already_exists: "Станция %{station_name} уже есть в этом маршруте!"
+      message_cannot_delete_station: Такой станции нет в маршруте либо это крайняя станция и удалить её нельзя!
+      message_wrong_train_type_to_delete: Удалить можно только поезд!
+
+  validation:
+    wrong_name_format: Название станции не соответствует стандарту! Название может состоять только из русских заглавных и прописных букв.
+
+errors:
+  default: Нет такой команды!
