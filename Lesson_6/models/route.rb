@@ -5,9 +5,6 @@ class Route < Model
     @start_station = start_station
     @finish_station = finish_station
 
-    puts @start_station.inspect
-    puts @finish_station.inspect
-
     @in_between_stations = {}
 
     validate!
