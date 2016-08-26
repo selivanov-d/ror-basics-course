@@ -3,7 +3,15 @@ module TranslationHelper
     key = message[:path].pop
     scope = message[:path]
 
-    I18n.t(key, scope: scope)
+    if message.has_key? :vars
+      vars = message[:vars]
+    else
+      vars = {}
+    end
+
+    options = {scope: scope}.merge vars
+
+    I18n.t(key, options)
   end
 
   def flash_message(message = {})

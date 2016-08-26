@@ -4,10 +4,10 @@ class Train < Model
 
   NUMBER_FORMAT = /^[\w\dа-я]{3}-?[\w\dа-я]{2}$/i
 
-  attr_reader :carriages, :number, :route
+  attr_reader :carriages, :number, :route, :type
   attr_writer :current_station
 
-  @@instances = {}
+  @@created = {}
 
   def initialize(number)
     @number = number
@@ -19,7 +19,7 @@ class Train < Model
     @current_station = nil
     @route = nil
 
-    @@instances[self.number] = self
+    @@created[self.number] = self
 
     register_instance
   end
@@ -54,7 +54,7 @@ class Train < Model
 
   def move_to_station(name)
     unless route_set? || station_in_route?(name)
-      raise RuntimeError.new(get_message({path: [:train, :error, :given_station_not_found_in_route]}))
+      raise RuntimeError.new(get_message({path: [:train, :error, :given_station_not_found_in_route]}, vars: {train_number: self.number, station_name: name}))
     end
 
     depart_from_station
@@ -85,15 +85,15 @@ class Train < Model
   end
 
   def to_s
-    "#{@number} -- #{self.class::TYPE}"
+    "#{@number} -- #{type}"
   end
 
   def self.find(number)
-    @@instances[number]
+    @@created[number]
   end
 
-  def self.instances
-    @@instances
+  def self.all
+    @@created
   end
 
   private
@@ -112,6 +112,10 @@ class Train < Model
   def validate!
     if (@number =~ NUMBER_FORMAT) == nil
       raise RuntimeError.new(get_message({path: [:train, :validation, :wrong_number_format]}))
+    end
+
+    if self.class.all.has_key? self.number
+      raise RuntimeError.new(get_message({path: [:train, :interface, :message_train_already_exists]}))
     end
   end
 end

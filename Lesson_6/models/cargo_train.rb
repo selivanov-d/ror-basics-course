@@ -1,5 +1,7 @@
 class CargoTrain < Train
-  TYPE = get_message({path: [:train, :cargo, :type]})
+  def initialize(number)
+    @type = get_message({path: [:train, :cargo, :type]})
+  end
 
   def add_carriage(carriage)
     unless carriage.instance_of? CargoCarriage

@@ -40,7 +40,7 @@ module Views
   def trains_list
     print_message({path: [:train, :interface, :header_choose_train]})
 
-    @trains.each_value do |train|
+    Train.all.each_value do |train|
       puts train
     end
 
@@ -74,7 +74,7 @@ module Views
 
   # экран действий над поездом
   def train_actions_screen(screen_vars)
-    print_message({path: [:train, :interface, :header_you_choose_train]})
+    print_message({path: [:train, :interface, :header_you_choose_train], vars: screen_vars})
     print_message({path: [:train, :interface, :header_action_selection]})
 
     generate_menu({
@@ -137,7 +137,7 @@ module Views
   def trains_on_station_list(screen_vars)
     station = screen_vars[:station]
 
-    print_message({path: [:station, :interface, :header_trains_list]})
+    print_message({path: [:station, :interface, :header_trains_list], vars: {station_name: station.name}})
 
     station.trains_list.each_value do |train|
       puts train
@@ -146,10 +146,11 @@ module Views
     print_back_button_and_prompt
   end
 
+
   def existing_trains_selection
     print_message({path: [:train, :interface, :header_choose_train]})
 
-    @trains.each_value do |train|
+    Train.all.each_value do |train|
       puts train
     end
 

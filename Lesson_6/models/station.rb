@@ -5,10 +5,14 @@ class Station < Model
 
   NAME_FORMAT = /^[а-я]{3,50}$/i
 
+  @@created = {}
+
   def initialize(name)
     @name = name
 
     validate!
+
+    @@created[self.name] = self
 
     @trains_list = {}
   end
@@ -26,6 +30,10 @@ class Station < Model
     @trains_list.delete train.number
 
     train
+  end
+
+  def self.all
+    @@created
   end
 
   def to_s

@@ -5,16 +5,19 @@ class Route < Model
     @start_station = start_station
     @finish_station = finish_station
 
+    puts @start_station.inspect
+    puts @finish_station.inspect
+
     @in_between_stations = {}
 
     validate!
   end
 
   def add_station(station)
-    raise ArgumentError.new(get_message({path: [:route, :error, :message_wrong_station_type_giveт]})) unless station.instance_of? Station
+    raise ArgumentError.new(get_message({path: [:route, :error, :message_wrong_station_type_given]})) unless station.instance_of? Station
 
     if stations_list.keys.include? station.name
-      raise RuntimeError.new(get_message({path: [:station, :error, :message_such_station_already_exists]}))
+      raise RuntimeError.new(get_message({path: [:station, :error, :message_such_station_already_exists], vars: {station_name: station.name}}))
     end
 
     @in_between_stations[station.name] = station
@@ -28,8 +31,8 @@ class Route < Model
     if @full_stations_list.empty?
       @full_stations_list[@start_station.name] = @start_station
 
-      @in_between_stations.each do |station_name, station|
-        @full_stations_list[station_name] = station
+      @in_between_stations.each_value do |station|
+        @full_stations_list[station.name] = station
       end
 
       @full_stations_list[@finish_station.name] = @finish_station
