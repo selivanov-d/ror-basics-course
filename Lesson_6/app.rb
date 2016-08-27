@@ -1,13 +1,9 @@
 require 'yaml'
 require 'i18n'
 
-# можно было бы загружать файлы из определённой директории через метод I18n.load_path, но что-то у меня не получилось.
-messages_file = File.join(File.dirname(__FILE__), 'i18n', 'ru.yml')
-messages = YAML.load_file(messages_file)
-
+I18n.load_path = Dir[File.expand_path(File.join(File.dirname(__FILE__), 'i18n', '*.yml')).to_s]
 I18n.config.available_locales = :ru
 I18n.locale = :ru
-I18n.backend.store_translations(:ru , messages)
 
 require_relative 'modules/manufacturer'
 require_relative 'modules/instance_counter'
