@@ -23,17 +23,27 @@ module ViewsHelper
     system 'clear' or system 'cls'
   end
 
+  def flash_message(message)
+    clear_console
+    puts message
+    sleep 1
+  end
+
+  def flash_error(message = I18n.t('errors.default'))
+    flash_message(message)
+  end
+
   private
   def print_prompt
     print '> '
   end
 
   def print_back_button
-    print_message({path: [:interface, :button_back]})
+    puts I18n.t('interface.button_back')
   end
 
   def print_exit_button
-    print_message({path: [:interface, :button_exit]})
+    puts I18n.t('interface.button_exit')
   end
 
   def print_delimiter

@@ -18,13 +18,13 @@ class Station < Model
   end
 
   def take_train_in(train)
-    raise ArgumentError.new(get_message({path: [:station, :error, :message_wrong_train_type]})) unless train.is_a? Train
+    raise ArgumentError.new(I18n.t('station.error.message_wrong_train_type')) unless train.is_a? Train
 
     @trains_list[train.number] = train
   end
 
   def remove_train(train)
-    raise ArgumentError.new(get_message({path: [:station, :error, :message_wrong_train_type_to_delete]})) unless train.is_a? Train
+    raise ArgumentError.new(I18n.t('station.error.message_wrong_train_type_to_delete')) unless train.is_a? Train
 
     train.current_station = nil
     @trains_list.delete train.number
@@ -43,7 +43,7 @@ class Station < Model
   private
   def validate!
     if (@name =~ NAME_FORMAT) == nil
-      raise ArgumentError.new(get_message({path: [:station, :validation, :wrong_name_format]}))
+      raise ArgumentError.new(I18n.t('station.validation.wrong_name_format'))
     end
   end
 end

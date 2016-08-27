@@ -26,7 +26,7 @@ class Train < Model
 
   def accelerate(delta)
     unless (delta.is_a? Numeric) && (delta > 0)
-      raise ArgumentError.new(get_message({path: [:train, :validation, :wrong_acceleration_delta_given]}))
+      raise ArgumentError.new(I18n.t('train.validation.wrong_acceleration_delta_given'))
     end
 
     @current_speed += delta
@@ -37,13 +37,13 @@ class Train < Model
   end
 
   def add_carriage(carriage)
-    raise RuntimeError.new(get_message({path: [:train, :error, :message_carriage_attach_error]})) if moves?
+    raise RuntimeError.new(I18n.t('train.error.message_carriage_attach_error')) if moves?
 
     @carriages << carriage
   end
 
   def remove_last_carriage
-    raise RuntimeError.new(get_message({path: [:train, :error, :message_carriage_detach_error]})) if moves?
+    raise RuntimeError.new(I18n.t('train.error.message_carriage_detach_error')) if moves?
 
     @carriages = @carriages[0...-1]
   end
@@ -54,7 +54,7 @@ class Train < Model
 
   def move_to_station(name)
     unless route_set? || station_in_route?(name)
-      raise RuntimeError.new(get_message({path: [:train, :error, :given_station_not_found_in_route]}, vars: {train_number: self.number, station_name: name}))
+      raise RuntimeError.new(I18n.t('train.error.given_station_not_found_in_route', train_number: self.number, station_name: name))
     end
 
     depart_from_station
@@ -62,11 +62,11 @@ class Train < Model
   end
 
   def route=(route)
-    raise ArgumentError.new(get_message({path: [:train, :error, :wrong_route_format_given]})) unless route.instance_of? Route
+    raise ArgumentError.new(I18n.t('train.error.wrong_route_format_given')) unless route.instance_of? Route
 
     unless @route.nil?
       unless @current_station.name == route.start_station.name
-        raise RuntimeError.new(get_message({path: [:train, :error, :cannot_assign_new_route_wrong_start_station]}))
+        raise RuntimeError.new(I18n.t('train.error.cannot_assign_new_route_wrong_start_station'))
       end
     end
 
@@ -111,11 +111,11 @@ class Train < Model
 
   def validate!
     if (@number =~ NUMBER_FORMAT) == nil
-      raise RuntimeError.new(get_message({path: [:train, :validation, :wrong_number_format]}))
+      raise RuntimeError.new(I18n.t('train.validation.wrong_number_format'))
     end
 
     if self.class.all.has_key? self.number
-      raise RuntimeError.new(get_message({path: [:train, :interface, :message_train_already_exists]}))
+      raise RuntimeError.new(I18n.t('train.interface.message_train_already_exists'))
     end
   end
 end

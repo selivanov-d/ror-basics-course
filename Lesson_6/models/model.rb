@@ -1,6 +1,4 @@
 class Model
-  include TranslationHelper
-
   def valid?
     validate!
     true

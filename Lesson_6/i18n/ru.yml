@@ -35,7 +35,7 @@ ru:
       header_what_train_type_to_create: Какой тип поезда хотите создать?
       header_enter_new_train_number: Укажите номер нового поезда
       header_choose_train: 'Выберите один из стоящих под парами поездов по его номеру:'
-      header_choose_station_for_train_to_send: На какую станцию отправить поезд?
+      header_choose_station_for_train_to_send: На какую станцию отправить поезд %{train_name}?
       header_action_selection: Что хотите сделать с этим поездом?
       header_trains_action_selection: 'С поездами можно сделать:'
       header_you_choose_train: "Вы выбрали поезд %{train_name}."

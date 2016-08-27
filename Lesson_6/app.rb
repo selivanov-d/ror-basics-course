@@ -9,7 +9,6 @@ require_relative 'modules/manufacturer'
 require_relative 'modules/instance_counter'
 
 require_relative 'helpers/views_helper'
-require_relative 'helpers/translation_helper'
 
 require_relative 'models/model'
 require_relative 'models/train'

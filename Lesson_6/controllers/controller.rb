@@ -25,10 +25,9 @@ class ApplicationController
     screen_vars = {}
     action_vars = {}
 
-    flash_message({path: [:interface, :intro]})
+    flash_message(I18n.t('interface.intro'))
 
     begin
-
       loop do
         clear_console
 
@@ -40,12 +39,13 @@ class ApplicationController
 
         user_input = get_user_command
 
-        if (user_input == get_message({path: [:interface, :command, :back]})) && (screen != :main_screen)
+        if (user_input == I18n.t('interface.command.back')) && (screen != :main_screen)
           screen = find_back_screen screen
         else
+
           case screen
             when :main_screen
-              abort_application if user_input == get_message({path: [:interface, :command, :exit]})
+              abort_application if user_input == I18n.t('interface.command.exit')
 
               case user_input
                 when '1'
@@ -63,7 +63,7 @@ class ApplicationController
                   if Train.all.size > 0
                     screen_to_go = :existing_trains_selection
                   else
-                    flash_error({path: [:train, :interface, :message_no_trains_exists]})
+                    flash_error(I18n.t('train.interface.message_no_trains_exists'))
                   end
                 else
                   flash_error
@@ -76,14 +76,14 @@ class ApplicationController
                   if stations.size > 0
                     screen_to_go = :stations_list
                   else
-                    flash_error({path: [:station, :interface, :message_no_stations_exists]})
+                    flash_error(I18n.t('station.interface.message_no_stations_exists'))
                   end
 
                 when '3'
                   if stations.size > 0
                     screen_to_go = :stations_list_selection
                   else
-                    flash_error({path: [:station, :interface, :message_no_stations_exists]})
+                    flash_error(I18n.t('station.interface.message_no_stations_exists'))
 
                     screen_to_go = :station_action_selection
                   end
@@ -109,17 +109,17 @@ class ApplicationController
                 action_vars = {train: train}
                 screen_vars = {train_name: train.number}
               else
-                flash_error({path: [:train, :interface, :message_no_such_train]})
+                flash_error(I18n.t('train.interface.message_no_such_train'))
               end
             when :station_creation_dialog
               if stations.key? user_input
-                flash_error({path: [:station, :interface, :message_such_station_already_exists]})
+                flash_error(I18n.t('station.interface.message_such_station_already_exists'))
               else
                 station = Station.new(user_input)
 
                 @route.add_station(station)
 
-                flash_message({path: [:station, :interface, :message_station_created], vars: {station_name: station.name}})
+                flash_message(I18n.t('station.interface.message_station_created', station_name: station.name))
 
                 screen_to_go = :station_action_selection
               end
@@ -137,23 +137,29 @@ class ApplicationController
 
                   train.add_carriage(carriage)
 
-                  flash_message({path: [:train, :interface, :message_carriage_added]})
+                  flash_message(I18n.t('train.interface.message_carriage_added'))
+
+                  screen_vars = {train_name: train.number}
                 when '2'
                   if train.carriages.size > 0
                     train.remove_last_carriage
-                    flash_message({path: [:train, :interface, :message_last_carriage_removed]})
+                    flash_message(I18n.t('train.interface.message_last_carriage_removed'))
                   else
-                    flash_message({path: [:train, :interface, :message_no_carriages_in_this_train]})
+                    flash_message(I18n.t('train.interface.message_no_carriages_in_this_train'))
                   end
+
+                  screen_vars = {train_name: train.number}
                 when '3'
+                  screen_vars = {train_name: train.number}
                   if stations.size > 0
                     screen_to_go = :train_move_to_station_dialog
                   else
-                    flash_error({path: [:station, :interface, :message_no_stations_exists]})
+                    flash_error(I18n.t('station.interface.message_no_stations_exists'))
                   end
                 else
                   flash_error
               end
+
             when :new_train_creation_dialog
               case action_vars[:type]
                 when :passenger_train
@@ -164,7 +170,7 @@ class ApplicationController
 
               train.route = @route
 
-              flash_message({path: [:train, :interface, :message_train_created_successfully], vars:  {train_type: train.type, train_number: train.number}})
+              flash_message(I18n.t('train.interface.message_train_created_successfully', train_type: train.type, train_number: train.number))
 
               screen_to_go = :train_actions_screen
               action_vars = {train: train}
@@ -176,16 +182,17 @@ class ApplicationController
             when :train_move_to_station_dialog
               train = action_vars[:train]
 
+              screen_vars = {train_name: train.number}
+              action_vars = {train: train}
+
               if stations.key? user_input
                 train.move_to_station(user_input)
 
-                flash_message({path: [:train, :interface, :message_train_moved_to_station], vars: {station_name: user_input}})
+                flash_message(I18n.t('train.interface.message_train_moved_to_station', station_name: user_input))
 
                 screen_to_go = :train_actions_screen
-                action_vars = {train: train}
-                screen_vars = {train_name: train.number}
               else
-                flash_error({path: [:station, :interface, :message_no_such_station]})
+                flash_error(I18n.t('station.interface.message_no_such_station'))
               end
 
             when :stations_list_selection
@@ -196,10 +203,10 @@ class ApplicationController
                   screen_to_go = :trains_on_station_list
                   screen_vars = {station: station}
                 else
-                  flash_error({path: [:station, :interface, :message_no_trains_on_this_station]})
+                  flash_error(I18n.t('station.interface.message_no_trains_on_this_station'))
                 end
               else
-                flash_error({path: [:station, :interface, :message_no_such_station]})
+                flash_error(I18n.t('station.interface.message_no_such_station'))
               end
 
             when :trains_on_station_list
@@ -212,13 +219,13 @@ class ApplicationController
                   if station.trains_list.size > 0
                     screen_to_go = :trains_on_station_list
                   else
-                    flash_error({path: [:station, :interface, :message_no_trains_on_this_station]})
+                    flash_error(I18n.t('station.interface.message_no_trains_on_this_station'))
                   end
                 else
-                  flash_error({path: [:station, :interface, :message_no_such_station]})
+                  flash_error(I18n.t('station.interface.message_no_such_station'))
                 end
               else
-                flash_error({path: [:station, :interface, :message_no_stations_exists]})
+                flash_error(I18n.t('station.interface.message_no_stations_exists'))
 
                 screen_to_go = :station_action_selection
               end
@@ -244,7 +251,7 @@ class ApplicationController
 
   private
   def abort_application
-    abort get_message({path: [:interface, :exit]})
+    abort I18n.t('interface.exit')
   end
 
   def find_back_screen(current_screen)

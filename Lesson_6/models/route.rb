@@ -11,10 +11,10 @@ class Route < Model
   end
 
   def add_station(station)
-    raise ArgumentError.new(get_message({path: [:route, :error, :message_wrong_station_type_given]})) unless station.instance_of? Station
+    raise ArgumentError.new(I18n.t('route.error.message_wrong_station_type_given')) unless station.instance_of? Station
 
     if stations_list.keys.include? station.name
-      raise RuntimeError.new(get_message({path: [:station, :error, :message_such_station_already_exists], vars: {station_name: station.name}}))
+      raise RuntimeError.new(I18n.t('station.error.message_such_station_already_exists', station_name: station.name))
     end
 
     @in_between_stations[station.name] = station
@@ -48,7 +48,7 @@ class Route < Model
 
   def delete_station(name)
     unless @in_between_stations.keys.include? name
-      raise RuntimeError.new(get_message({path: [:station, :error, :message_cannot_delete_station]}))
+      raise RuntimeError.new(I18n.t('station.error.message_cannot_delete_station'))
     end
 
     @in_between_stations.delete name
@@ -57,7 +57,7 @@ class Route < Model
   private
   def validate!
     unless stations_list.values.all? { |station| station.instance_of? Station }
-      raise RuntimeError.new(get_message({path: [:route, :validation, :wrong_station_type_in_route]}))
+      raise RuntimeError.new(I18n.t('route.validation.wrong_station_type_in_route'))
     end
   end
 end
