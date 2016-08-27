@@ -235,7 +235,7 @@ class ApplicationController
         end
       end
 
-    rescue *[RuntimeError, ArgumentError] => e
+    rescue RuntimeError, ArgumentError => e
       flash_error(e.message)
       retry
     end
