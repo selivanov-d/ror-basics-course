@@ -1,4 +1,4 @@
-class Train < Model
+class Train < BaseModel
   include Manufacturer
   include InstanceCounter
 

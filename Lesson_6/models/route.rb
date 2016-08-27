@@ -1,4 +1,4 @@
-class Route < Model
+class Route < BaseModel
   attr_reader :start_station, :finish_station
 
   def initialize(start_station, finish_station)

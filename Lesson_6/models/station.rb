@@ -1,4 +1,4 @@
-class Station < Model
+class Station < BaseModel
   include InstanceCounter
 
   attr_reader :name, :trains_list

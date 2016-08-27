@@ -10,7 +10,7 @@ require_relative 'modules/instance_counter'
 
 require_relative 'helpers/views_helper'
 
-require_relative 'models/model'
+require_relative 'models/base_model'
 require_relative 'models/train'
 require_relative 'models/cargo_train'
 require_relative 'models/passenger_train'

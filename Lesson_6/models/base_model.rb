@@ -1,4 +1,4 @@
-class Model
+class BaseModel
   def valid?
     validate!
     true
