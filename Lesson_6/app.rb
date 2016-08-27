@@ -1,5 +1,6 @@
 require 'yaml'
 require 'i18n'
+require 'abstract_method'
 
 I18n.load_path = Dir[File.expand_path(File.join(File.dirname(__FILE__), 'i18n', '*.yml')).to_s]
 I18n.config.available_locales = :ru

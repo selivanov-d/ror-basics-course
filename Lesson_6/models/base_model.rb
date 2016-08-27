@@ -1,4 +1,6 @@
 class BaseModel
+  abstract_method :validate!
+
   def valid?
     validate!
     true
