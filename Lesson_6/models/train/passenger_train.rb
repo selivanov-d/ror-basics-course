@@ -1,4 +1,4 @@
-class PassengerTrain < Train
+class Train::PassengerTrain < Train
   def initialize(number)
     @type = I18n.t('train.passenger.type')
 
@@ -6,7 +6,7 @@ class PassengerTrain < Train
   end
 
   def add_carriage(carriage)
-    unless carriage.instance_of? PassengerCarriage
+    unless carriage.instance_of? Carriage::PassengerCarriage
       raise ArgumentError.new(I18n.t('train.passenger.error.message_wrong_type_carriage'))
     end
 

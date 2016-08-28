@@ -1,14 +1,12 @@
 module Views
   include ViewsHelper
 
-  def render(view_name, view_vars = {})
+  @@screen_vars = {}
+
+  def render(view_name)
     abort 'Имя вида должно быть символом!' unless view_name.instance_of? Symbol
 
-    if view_vars.empty?
-      self.send view_name
-    else
-      self.send view_name, view_vars
-    end
+    self.send view_name
   end
 
   private
@@ -73,8 +71,8 @@ module Views
   end
 
   # экран действий над поездом
-  def train_actions_screen(screen_vars = {})
-    puts I18n.t('train.interface.header_you_choose_train', screen_vars)
+  def train_actions_screen
+    puts I18n.t('train.interface.header_you_choose_train', @@screen_vars)
     puts I18n.t('train.interface.header_action_selection')
 
     generate_menu({
@@ -112,8 +110,8 @@ module Views
   end
 
   # список станций с возможность выбора куда отправить поезд
-  def train_move_to_station_dialog(screen_vars = {})
-    puts I18n.t('train.interface.header_choose_station_for_train_to_send', screen_vars)
+  def train_move_to_station_dialog
+    puts I18n.t('train.interface.header_choose_station_for_train_to_send', @@screen_vars)
 
     stations.each_value do |station|
       puts station
@@ -134,8 +132,8 @@ module Views
   end
 
   # список поездов на станции
-  def trains_on_station_list(screen_vars = {})
-    station = screen_vars[:station]
+  def trains_on_station_list
+    station = @@screen_vars[:station]
 
     puts I18n.t('station.interface.header_trains_list', station_name: station.name)
 
