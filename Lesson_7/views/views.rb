@@ -16,9 +16,9 @@ module Views
     puts I18n.t('interface.header_possible_actions')
 
     generate_menu(
-        1 => I18n.t('interface.button_trains_management'),
-        2 => I18n.t('interface.button_stations_management'),
-        3 => I18n.t('interface.button_carriages_management')
+      1 => I18n.t('interface.button_trains_management'),
+      2 => I18n.t('interface.button_stations_management'),
+      3 => I18n.t('interface.button_carriages_management')
     )
 
     print_exit_button_and_prompt
@@ -29,8 +29,8 @@ module Views
     puts I18n.t('train.interface.header_trains_action_selection')
 
     generate_menu(
-        1 => I18n.t('train.interface.button_create_new_train'),
-        2 => I18n.t('train.interface.button_pick_existing_train')
+      1 => I18n.t('train.interface.button_create_new_train'),
+      2 => I18n.t('train.interface.button_pick_existing_train')
     )
 
     print_back_button_and_prompt
@@ -52,9 +52,9 @@ module Views
     puts I18n.t('station.interface.header_actions_options')
 
     generate_menu(
-        1 => I18n.t('station.interface.button_create_station'),
-        2 => I18n.t('station.interface.button_stations_list'),
-        3 => I18n.t('station.interface.button_station_trains_list')
+      1 => I18n.t('station.interface.button_create_station'),
+      2 => I18n.t('station.interface.button_stations_list'),
+      3 => I18n.t('station.interface.button_station_trains_list')
     )
 
     print_back_button_and_prompt
@@ -65,8 +65,8 @@ module Views
     puts I18n.t('train.interface.header_what_train_type_to_create')
 
     generate_menu(
-        1 => I18n.t('train.passenger.type'),
-        2 => I18n.t('train.cargo.type')
+      1 => I18n.t('train.passenger.type'),
+      2 => I18n.t('train.cargo.type')
     )
 
     print_back_button_and_prompt
@@ -78,7 +78,7 @@ module Views
     puts I18n.t('train.interface.header_action_selection')
 
     generate_menu(
-        1 => I18n.t('train.interface.button_send_to_station')
+      1 => I18n.t('train.interface.button_send_to_station')
     )
 
     print_back_button_and_prompt
@@ -160,10 +160,10 @@ module Views
     puts I18n.t('carriage.interface.header_carriage_action_selection')
 
     generate_menu(
-        1 => I18n.t('carriage.interface.button_add_carriage'),
-        2 => I18n.t('carriage.interface.button_remove_carriage'),
-        3 => I18n.t('carriage.interface.button_show_train_carriages_list'),
-        4 => I18n.t('carriage.interface.button_take_carriage_space')
+      1 => I18n.t('carriage.interface.button_add_carriage'),
+      2 => I18n.t('carriage.interface.button_remove_carriage'),
+      3 => I18n.t('carriage.interface.button_show_train_carriages_list'),
+      4 => I18n.t('carriage.interface.button_take_carriage_space')
     )
 
     print_back_button_and_prompt
