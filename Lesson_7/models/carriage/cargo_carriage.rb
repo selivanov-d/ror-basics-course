@@ -2,13 +2,12 @@ class Carriage::CargoCarriage < Carriage
   attr_reader :total_space, :space_taken
 
   def initialize(total_space)
-    total_space = total_space.to_f
+    @total_space = total_space.to_f
 
-    unless total_space > 0
+    unless @total_space > 0
       raise ArgumentError, I18n.t('carriage.cargo.error.wrong_input_space_type')
     end
 
-    @total_space = total_space.to_f
     @space_taken = 0
 
     super()

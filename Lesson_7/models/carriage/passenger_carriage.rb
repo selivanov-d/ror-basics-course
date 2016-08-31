@@ -2,13 +2,12 @@ class Carriage::PassengerCarriage < Carriage
   attr_reader :total_seats, :seats_taken
 
   def initialize(total_seats)
-    total_seats = total_seats.to_i
+    @total_seats = total_seats.to_i
 
-    unless total_seats > 0
+    unless @total_seats > 0
       raise ArgumentError, I18n.t('carriage.passenger.error.wrong_input_seats_count_type')
     end
 
-    @total_seats = total_seats
     @seats_taken = 0
 
     super()
