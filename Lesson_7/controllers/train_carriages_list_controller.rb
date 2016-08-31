@@ -2,11 +2,11 @@ class TrainCarriagesListController < ApplicationController
   PARENT_SCREEN = :carriage_action_selection
 
   def run
-    if !Train.all.empty?
+    if Train.all.any?
       train = Train.find @@user_input
 
       if train
-        if !train.carriages.empty?
+        if train.carriages.any?
           @@screen_vars = { train: train }
           @@screen = :carriages_in_train
         else

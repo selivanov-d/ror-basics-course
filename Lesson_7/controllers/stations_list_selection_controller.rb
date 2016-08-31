@@ -5,7 +5,7 @@ class StationsListSelectionController < ApplicationController
     if stations.key? @@user_input
       station = stations[@@user_input]
 
-      if !station.trains_list.empty?
+      if station.trains_list.any?
         @@screen = :trains_on_station_list
         @@screen_vars = { station: station }
       else

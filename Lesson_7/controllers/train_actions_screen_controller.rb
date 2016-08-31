@@ -6,7 +6,7 @@ class TrainActionsScreenController < ApplicationController
 
     case @@user_input
     when '1'
-      if !stations.empty?
+      if stations.any?
         @@screen = :train_move_to_station_dialog
       else
         flash_error(I18n.t('station.interface.message_no_stations_exists'))
