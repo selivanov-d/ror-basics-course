@@ -20,7 +20,7 @@ module Validator
   end
 
   module InstanceMethods
-    def validate_presence(attr_name, attr_value, valid_value = false)
+    def validate_presence(attr_name, attr_value, valid_value = true)
       return unless valid_value
 
       raise AttributeError unless [true, false].include? valid_value
