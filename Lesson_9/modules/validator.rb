@@ -41,7 +41,7 @@ module Validator
     def validate_format(attr_name, attr_value, valid_value)
       raise AttributeError unless valid_value.instance_of? Regexp
 
-      unless (attr_value =~ valid_value) == 0
+      unless attr_value =~ valid_value
         raise RuntimeError, I18n.t('errors.validations.wrong_property_format',
           name: attr_name
         )
