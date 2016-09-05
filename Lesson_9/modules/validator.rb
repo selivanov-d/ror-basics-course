@@ -14,9 +14,9 @@ module Validator
 
     add_validator(attr_name, validator_name, valid_value)
 
-    define_method 'validate!', validate_proc
+    define_method 'validate!', validate_method_proc
 
-    define_method 'valid?', valid_proc
+    define_method 'valid?', valid_method_proc
   end
 
   module InstanceMethods
@@ -82,7 +82,7 @@ module Validator
     [attr_name, validator_name, validation_rule]
   end
 
-  def validate_proc
+  def validate_method_proc
     proc do
       all_model_validators = self.class.instance_variable_get(:@validations)
 
@@ -98,7 +98,7 @@ module Validator
     end
   end
 
-  def valid_proc
+  def valid_method_proc
     proc do
       begin
         validate!
